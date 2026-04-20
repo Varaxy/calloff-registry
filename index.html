@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Call-Off Registry</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- AUTH -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-icon">📋</div>
+      <h1>Call-Off Registry</h1>
+      <p>Sign in to access the registry</p>
+      <div class="auth-group"><label>Email</label><input class="auth-input" type="email" id="a-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="auth-group"><label>Password</label><input class="auth-input" type="password" id="a-pass" placeholder="••••••••" autocomplete="current-password"></div>
+      <div class="auth-error" id="auth-error"></div>
+      <button class="btn-primary" id="login-btn">Sign In</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading registry…</div>
+  </div>
+
+  <!-- INACTIVITY WARNING -->
+  <div id="inactivity-warning">
+    <div class="inactivity-card">
+      <h2>Still there?</h2>
+      <p>You've been inactive. You'll be signed out in:</p>
+      <div class="inactivity-timer" id="inactivity-countdown">2:00</div>
+      <div class="inactivity-btns">
+        <button class="leave" id="inactivity-signout">Sign out</button>
+        <button class="stay" id="inactivity-stay">Stay signed in</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE VIEWER -->
+  <div id="img-viewer">
+    <button id="img-viewer-close">✕</button>
+    <img id="img-viewer-img" src="" alt="Request image">
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <div class="topbar">
+      <div class="topbar-brand">
+        <div class="topbar-icon">📋</div>
+        <span class="topbar-title">Call-Off Registry</span>
+      </div>
+      <div class="topbar-nav">
+        <button class="nav-tab active" id="tab-dashboard" data-view="dashboard">📊 Dashboard</button>
+        <button class="nav-tab" id="tab-employees" data-view="employees">👥 Employees</button>
+        <button class="nav-tab" id="tab-timeoff" data-view="timeoff">📅 Time Off</button>
+        <button class="nav-tab" id="tab-audit" data-view="audit">🔍 Audit</button>
+      </div>
+      <div class="topbar-r">
+        <div class="idle-indicator"><div class="idle-dot" id="idle-dot"></div><span id="idle-label">Active</span></div>
+        <span class="user-email" id="user-email"></span>
+        <button class="btn-sm no-print" id="export-btn">Export CSV</button>
+        <button class="btn-sm danger no-print" id="signout-btn">Sign Out</button>
+      </div>
+    </div>
+
+    <div class="view-content">
+
+      <!-- DASHBOARD -->
+      <div id="view-dashboard">
+        <div class="inner">
+          <div class="metrics">
+            <div class="metric"><div class="metric-val" id="m-total">0</div><div class="metric-lbl">Total</div></div>
+            <div class="metric"><div class="metric-val" id="m-week" style="color:var(--amber)">0</div><div class="metric-lbl">This week</div></div>
+            <div class="metric"><div class="metric-val" id="m-noshow" style="color:var(--red)">0</div><div class="metric-lbl">No shows</div></div>
+            <div class="metric"><div class="metric-val" id="m-people">0</div><div class="metric-lbl">Employees</div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Log a call-off</div>
+            <div class="form-grid">
+              <div class="form-group fg-wide">
+                <label>Employee name</label>
+                <input type="text" id="f-name" placeholder="First and last name" list="emp-names-list">
+                <datalist id="emp-names-list"></datalist>
+              </div>
+              <div class="form-group">
+                <label>Department</label>
+                <select id="f-dept">
+                  <option>Produce</option><option>Bakery</option><option>Deli</option>
+                  <option>Dairy</option><option>Meat</option><option>Frozen</option><option>General</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Reason</label>
+                <select id="f-reason">
+                  <option value="illness">Personal illness</option>
+                  <option value="family">Family emergency</option>
+                  <option value="none">No reason given</option>
+                  <option value="noshow">No show</option>
+                  <option value="early">Left early</option>
+                  <option value="late">Arrived late</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="f-date">
+              </div>
+              <div class="form-group">
+                <label>Shift</label>
+                <input type="text" id="f-shift" placeholder="e.g. 6-3, 11-8" list="shift-list">
+                <datalist id="shift-list">
+                  <option value="6-2"><option value="7-3"><option value="8-4"><option value="9-5">
+                  <option value="10-6"><option value="11-7"><option value="11-8"><option value="12-8">
+                  <option value="12-9"><option value="1-9"><option value="2-10"><option value="3-11">
+                  <option value="4-12"><option value="5-1"><option value="Overnight">
+                </datalist>
+              </div>
+              <div class="form-group">
+                <label>Logged by</label>
+                <input type="text" id="f-loggedby" placeholder="Your name">
+              </div>
+              <div class="form-group fg-wide">
+                <label>Notes (optional)</label>
+                <textarea id="f-notes" placeholder="Coverage found, expected return, details..."></textarea>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-log" id="log-btn">Log call-off</button>
+            </div>
+          </div>
+          <div class="alert-banner" id="repeat-alert">⚠️ <span id="repeat-msg"></span></div>
+          <div class="toolbar">
+            <div class="toolbar-l">
+              <span class="filter-lbl">Filter:</span>
+              <div class="pill active" data-filter="all">All</div>
+              <div class="pill" data-filter="illness">Illness</div>
+              <div class="pill" data-filter="family">Family</div>
+              <div class="pill" data-filter="none">No reason</div>
+              <div class="pill" data-filter="noshow">No show</div>
+              <div class="pill" data-filter="early">Left early</div>
+              <div class="pill" data-filter="late">Arrived late</div>
+              <div class="pill" data-filter="week">This week</div>
+            </div>
+            <div class="toolbar-r">
+              <div class="view-toggle">
+                <button class="vtog active" id="dash-vtog-list">List</button>
+                <button class="vtog" id="dash-vtog-day">By Day</button>
+              </div>
+            </div>
+          </div>
+          <div class="log-wrap">
+            <div class="log-empty" id="log-empty">No call-offs logged yet</div>
+            <div id="log-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES -->
+      <div id="view-employees" style="display:none">
+        <div class="inner">
+          <div class="toolbar">
+            <div class="toolbar-l">
+              <input type="text" id="emp-search-input" placeholder="🔍 Search employees…" style="max-width:240px">
+            </div>
+            <div class="toolbar-r">
+              <div class="view-toggle">
+                <button class="vtog active" id="emp-vtog-list">List</button>
+                <button class="vtog" id="emp-vtog-dept">By Dept</button>
+              </div>
+              <button class="btn-log" style="padding:8px 16px;font-size:12px" id="add-emp-btn">+ Add</button>
+            </div>
+          </div>
+          <div class="emp-list" id="emp-list"><div class="log-empty">No employees yet</div></div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div id="view-profile" style="display:none">
+        <div class="inner">
+          <div class="print-header">
+            <h2 id="print-emp-name"></h2>
+            <p id="print-emp-meta"></p>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem" class="no-print">
+            <button class="back-btn" id="back-btn">← Back</button>
+            <button class="btn-sm" id="print-btn">🖨 Print</button>
+          </div>
+          <div class="profile-header">
+            <div class="profile-top">
+              <div class="avatar lg" id="prof-avatar"></div>
+              <div class="profile-info">
+                <input class="profile-name-input" type="text" id="prof-edit-name" placeholder="Employee name">
+                <select class="profile-dept-select" id="prof-edit-dept">
+                  <option>Produce</option><option>Bakery</option><option>Deli</option>
+                  <option>Dairy</option><option>Meat</option><option>Frozen</option><option>General</option>
+                </select>
+                <div class="profile-actions no-print">
+                  <button class="btn-log" style="padding:7px 16px;font-size:12px" id="save-profile-btn">Save profile</button>
+                  <button class="btn-sm" id="prof-flag-btn"></button>
+                  <button class="btn-sm danger" id="delete-emp-btn">Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="profile-stats">
+              <div class="pstat"><div class="pstat-val" id="prof-total">0</div><div class="pstat-lbl">Total</div></div>
+              <div class="pstat"><div class="pstat-val" id="prof-month" style="color:var(--amber)">0</div><div class="pstat-lbl">This month</div></div>
+              <div class="pstat"><div class="pstat-val" id="prof-noshow" style="color:var(--red)">0</div><div class="pstat-lbl">No shows</div></div>
+            </div>
+            <div class="breakdown" id="prof-breakdown"></div>
+          </div>
+          <div class="card no-print">
+            <div class="card-title">Manager notes</div>
+            <textarea class="notes-area" id="prof-notes" placeholder="Add notes or flags about this employee…"></textarea>
+            <div class="form-footer"><button class="btn-log" id="save-notes-btn">Save notes</button></div>
+          </div>
+          <div class="card" id="print-notes-card" style="display:none">
+            <div class="card-title">Manager notes</div>
+            <div id="print-notes-text" style="font-size:13px;color:var(--text2);font-style:italic"></div>
+          </div>
+          <div class="card-title" style="margin-bottom:.75rem">Call-off history</div>
+          <div class="log-wrap">
+            <div class="log-empty" id="prof-log-empty">No call-offs on record</div>
+            <div id="prof-log-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIME OFF -->
+      <div id="view-timeoff" style="display:none">
+        <div class="inner">
+          <div class="card">
+            <div class="card-title">Log a time-off request</div>
+            <div class="form-grid">
+              <div class="form-group fg-wide">
+                <label>Employee name</label>
+                <input type="text" id="to-name" placeholder="First and last name" list="emp-names-list2">
+                <datalist id="emp-names-list2"></datalist>
+              </div>
+              <div class="form-group">
+                <label>Department</label>
+                <select id="to-dept">
+                  <option>Produce</option><option>Bakery</option><option>Deli</option>
+                  <option>Dairy</option><option>Meat</option><option>Frozen</option><option>General</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Type</label>
+                <select id="to-type">
+                  <option value="vacation">Vacation</option>
+                  <option value="personal">Personal day</option>
+                  <option value="medical">Medical</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>From date</label>
+                <input type="date" id="to-from">
+              </div>
+              <div class="form-group">
+                <label>To date</label>
+                <input type="date" id="to-to">
+              </div>
+              <div class="form-group">
+                <label>Logged by</label>
+                <input type="text" id="to-loggedby" placeholder="Your name">
+              </div>
+              <div class="form-group fg-wide">
+                <label>Notes (optional)</label>
+                <textarea id="to-notes" placeholder="Details about the request…"></textarea>
+              </div>
+              <div class="form-group fg-wide">
+                <label>Attach image (optional)</label>
+                <div id="upload-area">
+                  <div class="upload-btns">
+                    <div class="upload-btn">
+                      <input type="file" id="to-image-camera" accept="image/*" capture="environment">
+                      <div class="upload-btn-icon">📷</div>
+                      <span class="upload-btn-label">Take photo</span>
+                      <span class="upload-btn-sub">Open camera</span>
+                    </div>
+                    <div class="upload-btn">
+                      <input type="file" id="to-image-library" accept="image/*">
+                      <div class="upload-btn-icon">🖼️</div>
+                      <span class="upload-btn-label">Choose photo</span>
+                      <span class="upload-btn-sub">From library</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="upload-preview" id="upload-preview" style="display:none">
+                  <img id="upload-preview-img" src="" alt="">
+                  <span id="upload-preview-name"></span>
+                  <button id="clear-upload-btn">✕ Remove</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-log" id="to-btn">Log request</button>
+            </div>
+          </div>
+          <div class="toolbar">
+            <div class="toolbar-l">
+              <span class="filter-lbl">Status:</span>
+              <div class="pill active" data-tofilter="all">All</div>
+              <div class="pill" data-tofilter="pending">Pending</div>
+              <div class="pill" data-tofilter="approved">Approved</div>
+              <div class="pill" data-tofilter="denied">Denied</div>
+            </div>
+          </div>
+          <div class="log-wrap">
+            <div class="log-empty" id="to-empty">No time-off requests logged yet</div>
+            <div id="to-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIT -->
+      <div id="view-audit" style="display:none">
+        <div class="inner">
+          <div class="toolbar" style="margin-bottom:1rem">
+            <div class="toolbar-l">
+              <span class="filter-lbl">Filter:</span>
+              <div class="pill active" data-auditfilter="all">All</div>
+              <div class="pill" data-auditfilter="entry">Entries</div>
+              <div class="pill" data-auditfilter="employee">Employees</div>
+              <div class="pill" data-auditfilter="timeoff">Time Off</div>
+              <div class="pill" data-auditfilter="auth">Sign in/out</div>
+            </div>
+          </div>
+          <div class="log-wrap">
+            <div class="log-empty" id="audit-empty">No activity logged yet</div>
+            <div id="audit-list"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <div class="bottom-nav-inner">
+        <button class="bnav-tab active" id="bnav-dashboard" data-view="dashboard"><span class="bnav-icon">📊</span>Dashboard</button>
+        <button class="bnav-tab" id="bnav-employees" data-view="employees"><span class="bnav-icon">👥</span>Employees</button>
+        <button class="bnav-tab" id="bnav-timeoff" data-view="timeoff"><span class="bnav-icon">📅</span>Time Off</button>
+        <button class="bnav-tab" id="bnav-audit" data-view="audit"><span class="bnav-icon">🔍</span>Audit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD EMPLOYEE MODAL -->
+  <div class="modal-overlay" id="add-emp-modal">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-title">Add employee</div>
+      <div class="form-group" style="margin-bottom:12px"><label>Full name</label><input type="text" id="ae-name" placeholder="First and last name"></div>
+      <div class="form-group" style="margin-bottom:4px">
+        <label>Department</label>
+        <select id="ae-dept"><option>Produce</option><option>Bakery</option><option>Deli</option><option>Dairy</option><option>Meat</option><option>Frozen</option><option>General</option></select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sm" id="close-add-emp-btn">Cancel</button>
+        <button class="btn-log" id="save-emp-btn">Add employee</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT ENTRY MODAL -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+      <div class="modal-title">Edit call-off entry</div>
+      <div class="form-grid">
+        <div class="form-group fg-wide"><label>Employee name</label><input type="text" id="e-name"></div>
+        <div class="form-group"><label>Department</label>
+          <select id="e-dept"><option>Produce</option><option>Bakery</option><option>Deli</option><option>Dairy</option><option>Meat</option><option>Frozen</option><option>General</option></select>
+        </div>
+        <div class="form-group"><label>Reason</label>
+          <select id="e-reason">
+            <option value="illness">Personal illness</option><option value="family">Family emergency</option>
+            <option value="none">No reason given</option><option value="noshow">No show</option>
+            <option value="early">Left early</option><option value="late">Arrived late</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Date</label><input type="date" id="e-date"></div>
+        <div class="form-group">
+          <label>Shift</label>
+          <input type="text" id="e-shift" placeholder="e.g. 6-3, 11-8" list="shift-list-edit">
+          <datalist id="shift-list-edit">
+            <option value="6-2"><option value="7-3"><option value="8-4"><option value="9-5">
+            <option value="10-6"><option value="11-7"><option value="11-8"><option value="12-8">
+            <option value="12-9"><option value="1-9"><option value="2-10"><option value="3-11">
+            <option value="4-12"><option value="5-1"><option value="Overnight">
+          </datalist>
+        </div>
+        <div class="form-group"><label>Logged by</label><input type="text" id="e-loggedby"></div>
+        <div class="form-group fg-wide"><label>Notes</label><textarea id="e-notes"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sm" id="close-edit-btn">Cancel</button>
+        <button class="btn-log" id="save-edit-btn">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
