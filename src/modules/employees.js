@@ -23,20 +23,20 @@ export async function ensureEmployee(name, dept) {
   if (!error) employees.push(emp);
 }
 
-export function initEmployees() {
-  document.getElementById('emp-search-input').addEventListener('input', () => renderEmployees([]));
+export function initEmployees(getEntries) {
+  document.getElementById('emp-search-input').addEventListener('input', () => renderEmployees(getEntries()));
 
   document.getElementById('emp-vtog-list').addEventListener('click', function () {
     empViewMode = 'list';
     this.classList.add('active');
     document.getElementById('emp-vtog-dept').classList.remove('active');
-    renderEmployees([]);
+    renderEmployees(getEntries());
   });
   document.getElementById('emp-vtog-dept').addEventListener('click', function () {
     empViewMode = 'dept';
     this.classList.add('active');
     document.getElementById('emp-vtog-list').classList.remove('active');
-    renderEmployees([]);
+    renderEmployees(getEntries());
   });
 
   document.getElementById('add-emp-btn').addEventListener('click', openAddEmpModal);

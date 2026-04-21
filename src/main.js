@@ -2,7 +2,7 @@ import './style.css';
 import { sb } from './supabase.js';
 import { showScreen, showToast } from './modules/utils.js';
 import { initAuth, signOut } from './modules/auth.js';
-import { loadEntries, initDashboard, renderDashboard, setEntryChangeCallback } from './modules/dashboard.js';
+import { loadEntries, initDashboard, renderDashboard, setEntryChangeCallback, entries } from './modules/dashboard.js';
 import { loadEmployees, initEmployees, renderEmployees, ensureEmployee, employees } from './modules/employees.js';
 import { loadAuditLogs, initAudit, renderAuditLog, logAudit, setAuditUser } from './modules/audit.js';
 import { loadTimeOff, initTimeOff, renderTimeOff } from './modules/timeoff.js';
@@ -28,7 +28,7 @@ function showView(view, empId) {
   });
 
   if (view === 'dashboard') renderDashboard(employees);
-  if (view === 'employees') renderEmployees(employees);
+  if (view === 'employees') renderEmployees(entries);
   if (view === 'profile')   { showProfile(empId); }
   if (view === 'timeoff')   renderTimeOff();
   if (view === 'audit')     renderAuditLog();
@@ -48,7 +48,7 @@ function showView(view, empId) {
   });
 
   // Profile callback wired to employees module
-  initEmployees();
+  initEmployees(() => entries);
   initProfile(() => showView(prevView), () => employees);
   initAudit();
   initDashboard(() => employees);
