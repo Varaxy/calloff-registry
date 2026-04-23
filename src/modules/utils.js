@@ -76,7 +76,15 @@ export function showToast(msg, type) {
 }
 
 export function showScreen(name) {
-  document.getElementById('auth-screen').style.display    = name === 'auth'    ? 'flex'  : 'none';
-  document.getElementById('loading-screen').style.display = name === 'loading' ? 'flex'  : 'none';
-  document.getElementById('app').style.display            = name === 'app'     ? 'flex'  : 'none';
+  const auth    = document.getElementById('auth-screen');
+  const loading = document.getElementById('loading-screen');
+  const app     = document.getElementById('app');
+
+  auth.style.display    = 'none';
+  loading.style.display = 'none';
+  app.style.display     = 'none';
+
+  if (name === 'auth')    auth.style.display    = 'flex';
+  if (name === 'loading') loading.style.display = 'flex';
+  if (name === 'app')     app.style.display     = 'flex';
 }

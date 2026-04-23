@@ -12,6 +12,8 @@ import { startInactivityWatch, stopInactivityWatch } from './modules/inactivity.
 let currentView = 'dashboard';
 let prevView    = 'dashboard';
 
+let appStarted = false;
+
 // ── VIEWS ─────────────────────────────────
 function showView(view, empId) {
   if (view !== 'profile') prevView = view;
@@ -92,9 +94,10 @@ function showView(view, empId) {
 
   // Auth state listener
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN') {
+    if (event === 'SIGNED_IN' && !appStarted) {
       await startApp(session.user);
     } else if (event === 'SIGNED_OUT') {
+      appStarted = false;
       stopInactivityWatch();
       showScreen('auth');
     }
@@ -103,6 +106,8 @@ function showView(view, empId) {
 
 // ── START APP ────────────────────────────
 async function startApp(user) {
+  if (appStarted) return;
+  appStarted = true;
   showScreen('loading');
   setAuditUser(user);
   document.getElementById('user-email').textContent = user.email;
