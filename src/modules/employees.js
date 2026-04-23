@@ -47,6 +47,11 @@ export function initEmployees(getEntries) {
 }
 
 export function renderEmployees(entries) {
+  // Employee metrics
+  const depts = new Set(employees.map(e => e.dept));
+  document.getElementById('emp-m-total').textContent   = employees.length;
+  document.getElementById('emp-m-dept').textContent    = depts.size;
+  document.getElementById('emp-m-flagged').textContent = employees.filter(e => e.flagged).length;
   const q = (document.getElementById('emp-search-input').value || '').toLowerCase().trim();
   let list = employees.filter(e => !q || e.name.toLowerCase().includes(q) || e.dept.toLowerCase().includes(q));
   const el = document.getElementById('emp-list');

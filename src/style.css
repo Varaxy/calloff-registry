@@ -245,7 +245,7 @@ body {
 /* ── METRICS ─────────────────────────────── */
 .metrics {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
+  grid-template-columns: repeat(5, minmax(0,1fr));
   gap: 10px;
   margin-bottom: 1.5rem;
 }
@@ -254,6 +254,18 @@ body {
   border: 0.5px solid var(--border);
   border-radius: var(--r);
   padding: 14px 16px;
+}
+.metric-btn {
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.metric-btn:hover {
+  border-color: var(--border2);
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.metric-btn.active {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px var(--green-bg);
 }
 .metric-val {
   font-size: 26px; font-weight: 600;
@@ -647,8 +659,7 @@ textarea { resize: vertical; min-height: 58px; }
 
 /* ── RESPONSIVE ──────────────────────────── */
 @media (max-width: 700px) {
-  .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  .fg-wide { grid-column: span 2; }
+  .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }  .fg-wide { grid-column: span 2; }
   .topbar  { padding: 0 1rem; }
   .topbar-nav, .user-email, .idle-indicator { display: none; }
   .inner   { padding: 1rem .75rem; }

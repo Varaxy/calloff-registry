@@ -35,6 +35,11 @@ export function fmtDate(ds) {
   });
 }
 
+export function isThisYear(ds) {
+  if (!ds) return false;
+  return new Date(ds + 'T12:00:00').getFullYear() === new Date().getFullYear();
+}
+
 export function isThisWeek(ds) {
   if (!ds) return false;
   const d = new Date(ds + 'T12:00:00'), now = new Date();

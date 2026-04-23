@@ -73,10 +73,23 @@
       <div id="view-dashboard">
         <div class="inner">
           <div class="metrics">
-            <div class="metric"><div class="metric-val" id="m-total">0</div><div class="metric-lbl">Total</div></div>
-            <div class="metric"><div class="metric-val" id="m-week" style="color:var(--amber)">0</div><div class="metric-lbl">This week</div></div>
-            <div class="metric"><div class="metric-val" id="m-noshow" style="color:var(--red)">0</div><div class="metric-lbl">No shows</div></div>
-            <div class="metric"><div class="metric-val" id="m-people">0</div><div class="metric-lbl">Employees</div></div>
+            <div class="metric metric-btn" id="mc-total"><div class="metric-val" id="m-total">0</div><div class="metric-lbl">YTD Total</div></div>
+            <div class="metric metric-btn" id="mc-week"><div class="metric-val" id="m-week" style="color:var(--amber)">0</div><div class="metric-lbl">This week</div></div>
+            <div class="metric metric-btn" id="mc-noshow"><div class="metric-val" id="m-noshow" style="color:var(--red)">0</div><div class="metric-lbl">No shows (week)</div></div>
+            <div class="metric metric-btn" id="mc-late"><div class="metric-val" id="m-late" style="color:var(--teal)">0</div><div class="metric-lbl">Arrived late</div></div>
+            <div class="metric metric-btn" id="mc-early"><div class="metric-val" id="m-early" style="color:var(--purple)">0</div><div class="metric-lbl">Left early</div></div>
+          </div>
+
+          <!-- METRIC DRILL-DOWN -->
+          <div id="metric-drilldown" style="display:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+              <div class="card-title" id="drilldown-title" style="margin-bottom:0"></div>
+              <button class="btn-sm" id="drilldown-close">✕ Close</button>
+            </div>
+            <div class="log-wrap">
+              <div class="log-empty" id="drilldown-empty">No incidents found</div>
+              <div id="drilldown-list"></div>
+            </div>
           </div>
           <div class="card">
             <div class="card-title">Log a call-off</div>
@@ -161,6 +174,11 @@
       <!-- EMPLOYEES -->
       <div id="view-employees" style="display:none">
         <div class="inner">
+          <div class="metrics" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:1.25rem">
+            <div class="metric"><div class="metric-val" id="emp-m-total">0</div><div class="metric-lbl">Total employees</div></div>
+            <div class="metric"><div class="metric-val" id="emp-m-dept">0</div><div class="metric-lbl">Departments</div></div>
+            <div class="metric"><div class="metric-val" id="emp-m-flagged" style="color:var(--red)">0</div><div class="metric-lbl">Flagged</div></div>
+          </div>
           <div class="toolbar">
             <div class="toolbar-l">
               <input type="text" id="emp-search-input" placeholder="🔍 Search employees…" style="max-width:240px">
