@@ -3,7 +3,16 @@ import { esc } from './utils.js';
 
 export let auditLogs = [];
 
-const AUDIT_ICONS   = { add:'✅', edit:'✏️', delete:'🗑️', flag:'⚑', note:'📝', auth:'🔐', profile:'👤', status:'🔄' };
+const AUDIT_ICONS = {
+  add:     '<svg width="15" height="15"><use href="#ic-a-add"/></svg>',
+  edit:    '<svg width="15" height="15"><use href="#ic-edit"/></svg>',
+  delete:  '<svg width="15" height="15"><use href="#ic-trash"/></svg>',
+  flag:    '<svg width="15" height="15"><use href="#ic-flag"/></svg>',
+  note:    '<svg width="15" height="15"><use href="#ic-a-note"/></svg>',
+  auth:    '<svg width="15" height="15"><use href="#ic-a-auth"/></svg>',
+  profile: '<svg width="15" height="15"><use href="#ic-employees"/></svg>',
+  status:  '<svg width="15" height="15"><use href="#ic-refresh"/></svg>'
+};
 const AUDIT_CLASSES = { add:'a-add', edit:'a-edit', delete:'a-delete', flag:'a-flag', note:'a-note', auth:'a-auth', profile:'a-edit', status:'a-edit' };
 const AUDIT_LABELS  = { add:'Added', edit:'Edited', delete:'Deleted', flag:'Flagged', note:'Notes updated', auth:'Auth event', profile:'Profile updated', status:'Status updated' };
 

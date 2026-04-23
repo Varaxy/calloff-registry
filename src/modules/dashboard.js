@@ -234,8 +234,8 @@ export function entryRow(e, withLink, employees) {
       ${e.notes ? `<div class="log-notes">&ldquo;${esc(e.notes)}&rdquo;</div>` : ''}
     </div>
     <div class="row-actions no-print">
-      <button class="edit-btn" data-editid="${e.id}">Edit</button>
-      <button class="del-btn" data-delid="${e.id}">Remove</button>
+      <button class="edit-btn" data-editid="${e.id}"><svg width="11" height="11" style="margin-right:3px;vertical-align:-1px"><use href="#ic-edit"/></svg>Edit</button>
+      <button class="del-btn" data-delid="${e.id}"><svg width="11" height="11" style="margin-right:3px;vertical-align:-1px"><use href="#ic-trash"/></svg>Remove</button>
     </div>
   </div>`;
 }

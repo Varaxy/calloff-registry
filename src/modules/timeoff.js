@@ -162,7 +162,7 @@ export function renderTimeOff() {
     const dateRange = r.date_from === r.date_to ? fmtDate(r.date_from) : fmtDate(r.date_from) + ' – ' + fmtDate(r.date_to);
     const imgHtml = r.image_path
       ? `<img class="img-thumb" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-imgpath="${esc(r.image_path)}" title="View image" data-cached="${esc(r.image_path)}">`
-      : '<div class="img-placeholder">📄</div>';
+      : `<div class="img-placeholder"><svg width="20" height="20" stroke="currentColor" fill="none" stroke-width="1.5"><use href="#ic-file"/></svg></div>`;
     return `<div class="timeoff-row">
       <div class="avatar" style="background:${AV_BG[ci]};color:${AV_FG[ci]}">${initials(r.name)}</div>
       <div class="timeoff-body">
@@ -175,10 +175,10 @@ export function renderTimeOff() {
       </div>
       ${imgHtml}
       <div class="timeoff-actions">
-        ${r.status !== 'approved' ? `<button class="status-btn" style="color:var(--green)" data-approve="${r.id}">✓ Approve</button>` : ''}
-        ${r.status !== 'denied'   ? `<button class="status-btn" style="color:var(--red)"   data-deny="${r.id}">✕ Deny</button>` : ''}
-        ${r.status !== 'pending'  ? `<button class="status-btn" data-pending="${r.id}">↺ Pending</button>` : ''}
-        <button class="del-btn" data-todel="${r.id}">Remove</button>
+        ${r.status !== 'approved' ? `<button class="status-btn" style="color:var(--green)" data-approve="${r.id}"><svg width="11" height="11" style="margin-right:3px;vertical-align:-1px"><use href="#ic-check"/></svg>Approve</button>` : ''}
+        ${r.status !== 'denied'   ? `<button class="status-btn" style="color:var(--red)"   data-deny="${r.id}"><svg width="11" height="11" style="margin-right:3px;vertical-align:-1px"><use href="#ic-x"/></svg>Deny</button>` : ''}
+        ${r.status !== 'pending'  ? `<button class="status-btn" data-pending="${r.id}"><svg width="11" height="11" style="margin-right:3px;vertical-align:-1px"><use href="#ic-refresh"/></svg>Pending</button>` : ''}
+        <button class="del-btn" data-todel="${r.id}"><svg width="11" height="11" style="margin-right:3px;vertical-align:-1px"><use href="#ic-trash"/></svg>Remove</button>
       </div>
     </div>`;
   }).join('');
