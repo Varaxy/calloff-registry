@@ -65,6 +65,22 @@ function showView(view, empId) {
     renderEmployees(employees);
   });
 
+  // Handle tab visibility change — recover from loading state if session still exists
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible') {
+      const currentScreen = document.getElementById('loading-screen').style.display;
+      if (currentScreen === 'flex' || currentScreen === '') {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) {
+          showScreen('app');
+          showView(currentView);
+        } else {
+          showScreen('auth');
+        }
+      }
+    }
+  });
+
   // Check existing session
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
